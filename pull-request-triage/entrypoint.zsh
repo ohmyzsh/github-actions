@@ -109,7 +109,7 @@ main() {
 	# We only care about the PR if it was opened or updated. These are the only
 	# actions where there will be code changes to sort out.
 	if [[ "$action" != (opened|synchronize) ]]; then
-		exit 0
+		exit 78 # see https://man.openbsd.org/sysexits.3
 	fi
 
 	# Obtain SHA of the HEAD commit of the Pull Request
