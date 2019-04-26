@@ -83,8 +83,8 @@ triage_pull_request() {
 		case ${file:t} in
 			*.zsh) # check if or aliases or bindkeys are added, deleted or modified
 				diff=$(git diff HEAD...$GITHUB_SHA -- $file)
-				grep -q -E '^[-+][ #]+alias ' <<< $diff && labels+=($LABELS[alias])
-				grep -q -E '^[-+][ #]+bindkey ' <<< $diff && labels+=($LABELS[bindkey]) ;;
+				grep -q -E '^[-+][ #]*alias ' <<< $diff && labels+=($LABELS[alias])
+				grep -q -E '^[-+][ #]*bindkey ' <<< $diff && labels+=($LABELS[bindkey]) ;;
 			_*) # check if completion files are added, deleted or modified
 				labels+=($LABELS[completion]) ;;
 		esac
