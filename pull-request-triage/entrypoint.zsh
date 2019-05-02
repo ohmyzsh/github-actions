@@ -103,8 +103,8 @@ main() {
 	# Get basic info
 	action=$(jq --raw-output .action "$GITHUB_EVENT_PATH")
 	number=$(jq --raw-output .number "$GITHUB_EVENT_PATH")
-	owner=$(jq --raw-output .pull_request.head.repo.owner.login "$GITHUB_EVENT_PATH")
-	repo=$(jq --raw-output .pull_request.head.repo.name "$GITHUB_EVENT_PATH")
+	owner=$(jq --raw-output .pull_request.base.repo.owner.login "$GITHUB_EVENT_PATH")
+	repo=$(jq --raw-output .pull_request.base.repo.name "$GITHUB_EVENT_PATH")
 
 	# We only care about the PR if it was opened or updated. These are the only
 	# actions where there will be code changes to sort out.
