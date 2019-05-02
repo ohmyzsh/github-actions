@@ -191,6 +191,7 @@ main() {
 
 # Useful for debugging. Remove in the future
 cat "$GITHUB_EVENT_PATH"
+env
 set -x
 
 main "$@"
