@@ -135,6 +135,17 @@ main() {
 	# the repository, so we need to fetch them via the `pull/<ID>/head` trick.
 	if [[ $sha != $GITHUB_SHA ]]; then
 		git fetch origin "refs/pull/${number}/head"
+
+		# Really obtain SHA of PR head and compare it to the actual sha read from
+		# the event JSON file. If they don't match, this means there was a force-push
+		# in between from when the first pull_request event was triggered and when the
+		# code reached this point. If that's the case, there will be another event
+		# triggered (with an action 'synchronize'), so let's bail out early so that
+		# the next event trigger deals with it.
+		if [[ $(git rev-parse FETCH_HEAD) != $sha ]]; then
+			exit 78
+		fi
+
 		GITHUB_SHA=$sha
 	fi
 
