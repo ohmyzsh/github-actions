@@ -2,9 +2,14 @@
 set -e
 set -o pipefail
 
+# When exiting, return exit code 78 (EX_CONFIG) to stop the action
+# with a neutral status, instead of success / failure. See:
+# - https://developer.github.com/actions/creating-github-actions/accessing-the-runtime-environment/#exit-codes-and-statuses
+# - https://man.openbsd.org/sysexits.3#EX_CONFIG
+
 if [[ -z "$GITHUB_TOKEN" ]]; then
 	echo Set the GITHUB_TOKEN env variable.
-	exit 78 # see https://man.openbsd.org/sysexits.3
+	exit 78
 fi
 
 URI=https://api.github.com
@@ -109,7 +114,7 @@ main() {
 	# We only care about the PR if it was opened or updated. These are the only
 	# actions where there will be code changes to sort out.
 	if [[ "$action" != (opened|synchronize) ]]; then
-		exit 78 # see https://man.openbsd.org/sysexits.3
+		exit 78
 	fi
 
 	# Obtain SHA of the HEAD commit of the Pull Request
