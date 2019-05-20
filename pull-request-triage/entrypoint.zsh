@@ -38,7 +38,7 @@ LABELS=(
 )
 
 has_conflicts() {
-	! git format-patch --stdout HEAD..$GITHUB_SHA | git apply --check - > /dev/null 2>&1
+	! git diff HEAD...$GITHUB_SHA | git apply --check - > /dev/null 2>&1
 }
 
 triage_pull_request() {
