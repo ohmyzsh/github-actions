@@ -25,6 +25,7 @@ LABELS=(
 	update  'Area: updater'
 	plugin  'Area: plugin'
 	theme   'Area: theme'
+	uninstall   'Area: uninstaller'
 	new_plugin  'New: plugin'
 	new_theme   'New: theme'
 	plugin_aws  'Plugin: aws'
@@ -79,6 +80,7 @@ triage_pull_request() {
 			oh-my-zsh.(sh|.zsh)) labels+=($LABELS[init]) ;;
 			tools/*upgrade.sh) labels+=($LABELS[update]) ;;
 			tools/install.sh) labels+=($LABELS[install]) ;;
+			tools/uninstall.sh) labels+=($LABELS[uninstall]) ;;
 			plugins/aws/*) labels+=($LABELS[plugin_aws]) ;;
 			plugins/git/*) labels+=($LABELS[plugin_git]) ;;
 			plugins/mercurial/*) labels+=($LABELS[plugin_mercurial]) ;;
