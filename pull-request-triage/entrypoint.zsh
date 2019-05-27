@@ -39,7 +39,9 @@ LABELS=(
 )
 
 has_conflicts() {
-	! git diff --full-index --unified=1 HEAD...$GITHUB_SHA | git apply --check - > /dev/null 2>&1
+	git merge --quiet --no-commit --no-ff $GITHUB_SHA &>/dev/null && ret=1 || ret=0
+	git merge --abort &>/dev/null
+	return $ret
 }
 
 triage_pull_request() {
