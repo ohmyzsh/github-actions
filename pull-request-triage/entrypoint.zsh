@@ -39,7 +39,8 @@ LABELS=(
 )
 
 has_conflicts() {
-	git merge --quiet --no-commit --no-ff $GITHUB_SHA &>/dev/null && ret=1 || ret=0
+	git -c user.name=bot -c user.email=b@o.t \
+		merge --no-commit --no-ff $GITHUB_SHA && ret=1 || ret=0
 	git merge --abort &>/dev/null
 	return $ret
 }
