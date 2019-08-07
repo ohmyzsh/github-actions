@@ -191,7 +191,7 @@ main() {
 		if (( $replace )); then
 			# Replace labels: https://developer.github.com/v3/issues/labels/#replace-all-labels-for-an-issue
 			echo "Replacing labels of PR #$number on ${owner}/${repo}:" ${(j:, :)${(qq)labels}}...
-			curl -XPUT -sSL \
+			curl -XPUT -sSL --fail \
 				-H "${AUTH_HEADER}" \
 				-H "${API_HEADER}" \
 				--data $data \
@@ -199,7 +199,7 @@ main() {
 		else
 			# Add labels: https://developer.github.com/v3/issues/labels/#add-labels-to-an-issue
 			echo "Adding labels to PR #$number on ${owner}/${repo}:" ${(j:, :)${(qq)labels}}...
-			curl -XPOST -sSL \
+			curl -XPOST -sSL --fail \
 				-H "${AUTH_HEADER}" \
 				-H "${API_HEADER}" \
 				--data $data \
@@ -207,6 +207,7 @@ main() {
 		fi
 	else
 		echo "No labels added to PR #$number."
+		exit 78
 	fi
 }
 
