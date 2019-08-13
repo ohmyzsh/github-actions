@@ -1,0 +1,6 @@
+name: 'Oh My Zsh Pull Request triage'
+description: 'Triage a Pull Request based on the changes it makes'
+author: 'Marc Cornellà'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
