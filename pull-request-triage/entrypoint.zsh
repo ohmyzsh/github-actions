@@ -188,23 +188,34 @@ main() {
 	if (( $#labels > 0 )); then
 		data=$(print -l $labels | jq -cnR '{ labels: [inputs | select(length>0)] }')
 
+		# Show curl output but also get the HTTP response code
+		# Taken from: https://superuser.com/a/862395
+		exec 3>&1
+
 		if (( $replace )); then
 			# Replace labels: https://developer.github.com/v3/issues/labels/#replace-all-labels-for-an-issue
 			echo "Replacing labels of PR #$number on ${owner}/${repo}:" ${(j:, :)${(qq)labels}}...
-			curl -XPUT -sSL --fail \
+			HTTP_STATUS=$(curl -w "%{http_code}" -o >(cat >&3) \
+				-XPUT -sSL \
 				-H "${AUTH_HEADER}" \
 				-H "${API_HEADER}" \
 				--data $data \
-				"${URI}/repos/${owner}/${repo}/issues/${number}/labels"
+				"${URI}/repos/${owner}/${repo}/issues/${number}/labels")
 		else
 			# Add labels: https://developer.github.com/v3/issues/labels/#add-labels-to-an-issue
 			echo "Adding labels to PR #$number on ${owner}/${repo}:" ${(j:, :)${(qq)labels}}...
-			curl -XPOST -sSL --fail \
+			HTTP_STATUS=$(curl -w "%{http_code}" -o >(cat >&3) \
+				-XPUT -sSL \
 				-H "${AUTH_HEADER}" \
 				-H "${API_HEADER}" \
 				--data $data \
-				"${URI}/repos/${owner}/${repo}/issues/${number}/labels"
+				"${URI}/repos/${owner}/${repo}/issues/${number}/labels")
 		fi
+		
+		[[ $HTTP_STATUS = 200 ]] || {
+			echo HTTP Response: $HTTP_STATUS
+			exit 1
+		}
 	else
 		echo "No labels added to PR #$number."
 		exit 78
