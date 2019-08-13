@@ -4,3 +4,6 @@ author: 'Marc Cornellà'
 runs:
   using: 'docker'
   image: 'Dockerfile'
+branding:
+  icon: 'archive'
+  color: 'blue'
