@@ -212,19 +212,20 @@ main() {
 				"${URI}/repos/${owner}/${repo}/issues/${number}/labels")
 		fi
 		
-		[[ $HTTP_STATUS = 200 ]] || {
-			echo HTTP Response: $HTTP_STATUS
-			exit 1
-		}
+		case $HTTP_STATUS in
+			4*) echo HTTP Response: $HTTP_STATUS; exit 1 ;;
+			*) return ;;
+		esac
 	else
 		echo "No labels added to PR #$number."
 		exit 78
 	fi
 }
 
-# Useful for debugging. Remove in the future
-cat "$GITHUB_EVENT_PATH"
-env
-set -x
+if [[ $DEBUG_ACTIONS != false ]]; then
+	cat "$GITHUB_EVENT_PATH"
+	env
+	set -x
+fi
 
 main "$@"
