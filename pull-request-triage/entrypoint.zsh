@@ -213,7 +213,7 @@ main() {
 		fi
 		
 		case $HTTP_STATUS in
-			4*) echo HTTP Response: $HTTP_STATUS; exit 1 ;;
+			4*) echo HTTP Response: $HTTP_STATUS; exit 78 ;;
 			*) return ;;
 		esac
 	else
