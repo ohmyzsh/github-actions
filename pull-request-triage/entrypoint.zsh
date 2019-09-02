@@ -7,9 +7,13 @@ set -o pipefail
 # - https://developer.github.com/actions/creating-github-actions/accessing-the-runtime-environment/#exit-codes-and-statuses
 # - https://man.openbsd.org/sysexits.3#EX_CONFIG
 
+# New GitHub Actions beta doesn't support EX_CONFIG
+# NEUTRAL=78
+NEUTRAL=0
+
 if [[ -z "$GITHUB_TOKEN" ]]; then
 	echo Set the GITHUB_TOKEN env variable.
-	exit 78
+	exit $NEUTRAL
 fi
 
 URI=https://api.github.com
@@ -119,7 +123,7 @@ main() {
 	# We only care about the PR if it was opened or updated. These are the only
 	# actions where there will be code changes to sort out.
 	if [[ "$action" != (opened|synchronize) ]]; then
-		exit 78
+		exit $NEUTRAL
 	fi
 
 	# Obtain SHA of the HEAD commit of the Pull Request
@@ -148,7 +152,7 @@ main() {
 		# triggered (with an action 'synchronize'), so let's bail out early so that
 		# the next event trigger deals with it.
 		if [[ $(git rev-parse FETCH_HEAD) != $sha ]]; then
-			exit 78
+			exit $NEUTRAL
 		fi
 
 		GITHUB_SHA=$sha
@@ -213,12 +217,12 @@ main() {
 		fi
 		
 		case $HTTP_STATUS in
-			4*) echo HTTP Response: $HTTP_STATUS; exit 78 ;;
+			4*) echo HTTP Response: $HTTP_STATUS; exit $NEUTRAL ;;
 			*) return ;;
 		esac
 	else
 		echo "No labels added to PR #$number."
-		exit 78
+		exit $NEUTRAL
 	fi
 }
 
