@@ -1,4 +1,8 @@
-# Oh My Zsh Pull Request triage action
+### This GitHub Action is deprecated. Do Not use
+
+* * * *
+
+# PR triage action
 
 This GitHub Action analyzes the changes of a Pull Request when a pull_request event is
 generated with the action `opened` or `synchronize`.
